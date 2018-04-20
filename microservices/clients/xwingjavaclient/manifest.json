@@ -1,0 +1,9 @@
+{
+    "runtime": {
+        "majorVersion": "8"
+    },
+    "command": "java -jar XwingApp-1.0.jar",
+    "release": {
+    },
+    "notes": ""
+}

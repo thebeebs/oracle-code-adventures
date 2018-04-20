@@ -1,0 +1,9 @@
+{
+  "runtime":{
+    "majorVersion":"2.7.13"
+  },
+  "command": "bash ./install_and_run.sh",
+  "startupTime": "600",
+  "release": {},
+  "notes": "X - Wing 0.1"
+}
