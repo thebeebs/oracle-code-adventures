@@ -1,465 +1,64 @@
-## Introduction
-Get familiar with the Serverless architecture paradigm and run your first function !
-Oracle has contributed the FnProject.io to the Open Source community.  Fn is an event-driven, open source, functions-as-a-service compute platform that you can run anywhere.
+# Introduction to Fn
 
-This tutorial takes you through the Fn developer experience for building
-Java functions. It shows how easy it is to build, deploy and test
-functions written in Java.
+Fn is a lightweight Docker-based serverless functions platform you can
+run on your laptop, server, or cloud.  In this adventure  we will walk through installing Fn, develop a function and
+deploy them to a local Fn server.
 
-## Prequisites
+The function we are going to create will control the launch of a Space Rocket. It will accept some parameters, perform a calculation and then output some variables to control the launch. 
 
-This tutorial requires you to have a Linux instance with both both Docker and Fn installed, where you can run the Fn Server.  Access to this instance will be provided in the workshop's access document.
+Once we have hosted our function we will submit it to a Mission Control Dashboard to see how our function performs.  
 
-Open 2 sessions to the Fn Server, by using your favorite ssh tool (command line, putty or a browser plugin such as FireSSH
+So let's get started!
 
-# Getting Started
+## Installing Fn
 
-As multiple participants will be using the same Fn server, you first have to 
-create a "personal" directory, then cd into it.  So if you are for example "user01", type the following:
+Setting up a working Fn install is a two-step process.  First you need
+to ensure you have the necessary prerequisites and then you can install
+Fn itself.
 
->`mkdir user01`
-> `cd user01`
+### Prerequisites
 
+Before we can install Fn you'll need:
 
-Let's start by creating a new function.  In a terminal type the
-following and note the runtime value is **java8**, not just java.  "java"
-defaults to Java 9 but this lab uses Java 8.
+1. A computer running Linux or MacOS.  If you have a Windows machine the
+easiest thing to do is install [VirtualBox](https://www.virtualbox.org/)
+and run a free Linux virtual machine.
+2. [Docker](https://www.docker.com/) 17.05 (or higher) needs to be
+installed and running.
 
->`mkdir javafn`
+> __NOTE__ In this tutorial we'll work in a purely local development
+mode.  However, when deploying functions to a remote Fn server, a Docker
+Hub (or other Docker registry) account is required.
 
-> `cd javafn`
+That's it.  You can use your favorite IDE for function development.
+However, for this tutorial, an IDE isn't necessary.
 
->`fn init --runtime java8`
+### Downloading and Installing Fn
 
-The output will be:
-```sh
+From a terminal type the following:
 
-        ______
-       / ____/___
-      / /_  / __ \
-     / __/ / / / /
-    /_/   /_/ /_/
-
-Runtime: java8
-Function boilerplate generated.
-func.yaml created.
-```
-
-`fn init` creates an simple function with a bit of boilerplate to get you
-started. The `--runtime` option is used to indicate that the function
-we're going to develop will be written in Java.  A number of other
-runtimes are also supported.  If you have the `tree` utility installed
-you can see the directory structure that the init command has created.
-
->`tree`
-
-```sh
-.
-├── func.yaml
-├── pom.xml
-└── src
-    ├── main
-    │   └── java
-    │       └── com
-    │           └── example
-    │               └── fn
-    │                   └── HelloFunction.java
-    └── test
-        └── java
-            └── com
-                └── example
-                    └── fn
-                        └── HelloFunctionTest.java
-
-11 directories, 4 files
-```
-
-
-As usual, the init command has created a `func.yaml` file for your
-function but in the case of Java it also creates a Maven `pom.xml` file
-as well as a function class and function test class.
-
-Take a look at the contents of the generated func.yaml file.
-
->`cat func.yaml`
-
-```sh
-version: 0.0.1
-runtime: java8
-cmd: com.example.fn.HelloFunction::handleRequest
-```
-
-In the case of a Java function, the `cmd` property is set to the fully
-qualified name of the function class and the method that should be
-invoked when your `javafn` function is called.
-
-The Java function init also generates a Maven `pom.xml` file to build
-and test your function.  The pom includes the Fn Java FDK runtime
-and test libraries your function needs.
-
-# Running your Function
-
-Let's build and run the generated function.  We're working locally and
-won't be pushing our function images to a Docker registry like Docker
-Hub. So before we build let's set `FN_REGISTRY` to a local-only registry
-username like `fndemouser`.
-
->`export FN_REGISTRY=fndemouser`
-
-Now we're ready to run.  Depending on whether this is your first time
-developing a Java function you may or may not see Docker images being
-pulled from Docker Hub.  Once the necessary base images are downloaded
-subsequent operations will be faster.
-
-As the function is built using Maven you may also see a number of Java
-packages being downloaded.  This is also expected the first time you
-run a function and trigger a build.
-
->`fn run`
-
-Here's what the abbreviated output will look like:
-
-```sh
-Building image fndemouser/javafn:0.0.1
-Sending build context to Docker daemon  28.67kB
-Step 1/11 : FROM fnproject/fn-java-fdk-build:latest as build-stage
-latest: Pulling from fnproject/fn-java-fdk-build
-...
-Step 2/11 : WORKDIR /function
- ---> 8ed38772a9e4
-Removing intermediate container 9c3957272448
-Step 3/11 : ENV MAVEN_OPTS -Dhttp.proxyHost= -Dhttp.proxyPort= -Dhttps.proxyHost= -Dhttps.proxyPort= -Dhttp.nonProxyHosts= -Dmaven.repo.local=/usr/share/maven/ref/repository
- ---> Running in 7a2e1ec6d8a5
- ---> 345e102442d0
-Removing intermediate container 7a2e1ec6d8a5
-Step 4/11 : ADD pom.xml /function/pom.xml
- ---> 7bd708b005e9
-Step 5/11 : RUN mvn package dependency:copy-dependencies -DincludeScope=runtime -DskipTests=true -Dmdep.prependGroupId=true -DoutputDirectory=target --fail-never
- ---> Running in 51427fd1c021
-[INFO] Scanning for projects...
-Downloading: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-deploy-plugin/2.7/maven-deploy-plugin-2.7.pom
-Downloaded: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-deploy-plugin/2.7/maven-deploy-plugin-2.7.pom (5.6 kB at 8.4 kB/s)
-Downloading: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-deploy-plugin/2.7/maven-deploy-plugin-2.7.jar
-Downloaded: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-deploy-plugin/2.7/maven-deploy-plugin-2.7.jar (27 kB at 188 kB/s)
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] Building hello 1.0.0
-[INFO] ------------------------------------------------------------------------
-...
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 7.853 s
-[INFO] Finished at: 2017-09-20T13:50:55Z
-[INFO] Final Memory: 19M/121M
-[INFO] ------------------------------------------------------------------------
- ---> c010a22244a1
-Removing intermediate container 51427fd1c021
-Step 6/11 : ADD src /function/src
- ---> e9dd4ad1fb0c
-Step 7/11 : RUN mvn package
- ---> Running in 74da2bfc5f1b
-[INFO] Scanning for projects...
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] Building hello 1.0.0
-[INFO] ------------------------------------------------------------------------
-...
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-Running com.example.fn.HelloFunctionTest
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.371 sec
-
-Results :
-
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
-
-[INFO]
-[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ hello ---
-[INFO] Building jar: /function/target/hello-1.0.0.jar
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-...
-Removing intermediate container 74da2bfc5f1b
-Step 8/11 : FROM fnproject/fn-java-fdk:latest
- ---> 3518e302e29e
-Step 9/11 : WORKDIR /function
- ---> Using cache
- ---> 2d31a347b567
-Step 10/11 : COPY --from=build-stage /function/target/*.jar /function/app/
- ---> 28f86279daf1
-Step 11/11 : CMD com.example.fn.HelloFunction::handleRequest
- ---> Running in 12dd9351221a
- ---> 7617229106a0
-Removing intermediate container 12dd9351221a
-Successfully built 7617229106a0
-Successfully tagged fndemouser/javafn:0.0.1
-Hello, world!
-
-```
-
-In the output you can see Maven compiling the code and running
-the test, the function packaged into a container, and then run locally
-to produce the output "Hello, world!".
-
-Let's try one more thing and pipe some input into the function.  In your
-terminal type:
 
 ![](images/userinput.png)
->`echo -n "Bob" | fn run`
+>`curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh`
+
+Once installed you'll see the Fn version printed out.  You should see
+something similar to the following displayed (although likely with a later
+version number):
 
 ```sh
-Hello, Bob!
+fn version 0.4.62
 ```
 
-Instead of "Hello, world!" the function has read the input string "Bob"
-from standard input and returned "Hello, Bob!".
+### Starting Fn Server
 
-# Exploring the Code
+The final install step is to start the Fn server.  Since Fn runs on
+Docker it'll need to be up and running too.
 
-We've generated, compiled, and run the Java function so let's take a
-look at the code.  You may want to open the code in your favorite IDE or editor.
-
-Below is the generated `com.example.fn.HelloFunction` class.  As you can
-see the function is just a method on a POJO that takes a string value
-and returns another string value, but the Java FDK also supports binding
-input parameters to streams, primitive types, byte arrays and Java POJOs
-unmarshalled from JSON.  Functions can also be static or instance
-methods.
-
-```java
-package com.example.fn;
-
-public class HelloFunction {
-
-    public String handleRequest(String input) {
-        String name = (input == null || input.isEmpty()) ? "world"  : input;
-
-        return "Hello, " + name + "!";
-    }
-
-}
-```
-
-This function returns the string "Hello, world!" unless an input string
-is provided in which case it returns "Hello, \<input string\>!".  We saw
-this previously when we piped "Bob" into the function.   Notice that
-the Java FDK reads from standard input and automatically puts the
-content into the string passed to the function.  This greatly simplifies
-the function code.
-
-# Testing with JUnit
-
-`fn init` also generated a JUnit test for the function which uses the
-Java FDK's function test framework.  With this framework you can setup
-test fixtures with various function input values and verify the results.
-
-The generated test confirms that when no input is provided the function
-returns "Hello, world!".
-
-```java
-package com.example.fn;
-
-import com.fnproject.fn.testing.*;
-import org.junit.*;
-
-import static org.junit.Assert.*;
-
-public class HelloFunctionTest {
-
-    @Rule
-    public final FnTestingRule testing = FnTestingRule.createDefault();
-
-    @Test
-    public void shouldReturnGreeting() {
-        testing.givenEvent().enqueue();
-        testing.thenRun(HelloFunction.class, "handleRequest");
-
-        FnResult result = testing.getOnlyResult();
-        assertEquals("Hello, world!", result.getBodyAsString());
-    }
-
-}
-```
-
-Let's add a test that confirms that when an input string like "Bob" is
-provided we get the expected result.
-
-Add the following method to `HelloFunctionTest`:
-
-```java
-    @Test
-    public void shouldReturnWithInput() {
-        testing.givenEvent().withBody("Bob").enqueue();
-        testing.thenRun(HelloFunction.class, "handleRequest");
-
-        FnResult result = testing.getOnlyResult();
-        assertEquals("Hello, Bob!", result.getBodyAsString());
-    }
-```
-
-You can see the `withBody()` method used to specify the value of the
-function input.
-
-You can run the tests by building your function with `fn build`.  This
-will cause Maven to compile and run the updated test class.  If you
-opened the code in an IDE you can run the tests directly from there.
-
-![](images/userinput.png)
->`fn build`
-
-```sh
-...
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-Running com.example.fn.HelloFunctionTest
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.508 sec
-
-Results :
-
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
-...
-Successfully built 85fb9b00348e
-Successfully tagged fndemouser/javafn:0.0.1
-Function fndemouser/javafn:0.0.1 built successfully.
-```
-
-# Accepting JSON Input
-
-Let's convert this function to use JSON for its input and output.
-Replace the definition of `HelloFunction` with the following:
-
-```java
-package com.example.fn;
-
-public class HelloFunction {
-
-    public static class Input {
-        public String name;
-    }
-
-    public static class Result {
-        public String salutation;
-    }
-
-    public Result handleRequest(Input input) {
-        Result result = new Result();
-        result.salutation = "Hello " + input.name;
-        return result;
-    }
-
-}
-```
-
-We've created a couple of simple Pojos to bind the JSON input and output
-to and changed the function signature to use these Pojos.  The
-Java FDK will automatically bind input data based on the Java arguments
-to the function. JSON support is built-in but input and output binding
-is extensible and you could (for instance) plug in marshallers for other
-data formats like protobuf, avro or xml.
-
-Let's build the updated function.
-
-![](images/userinput.png)
->`fn build`
-
-```sh
-...
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-Running com.example.fn.HelloFunctionTest
-An exception was thrown during Input Coercion: Failed to coerce event to user function parameter type class com.example.fn.HelloFunction$Input
-...
-An exception was thrown during Input Coercion: Failed to coerce event to user function parameter type class com.example.fn.HelloFunction$Input
-...
-Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.893 sec <<< FAILURE!
-...
-Results :
-
-Tests in error:
-  shouldReturnGreeting(com.example.fn.HelloFunctionTest): One and only one response expected, but 0 responses were generated.
-  shouldReturnWithInput(com.example.fn.HelloFunctionTest): One and only one response expected, but 0 responses were generated.
-
-Tests run: 2, Failures: 0, Errors: 2, Skipped: 0
-
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 3.477 s
-[INFO] Finished at: 2017-09-21T14:59:21Z
-[INFO] Final Memory: 16M/128M
-[INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.12.4:test (default-test) on project hello: There are test failures.
-```
-
-Oops! as we can see this function build has fail due to test failures--we
-changed the code significantly but didn't update our tests!  We really
-should be doing test driven development and updating the test first but
-at least our bad behavior has been caught.  Let's update the tests
-to reflect our new expected results.  Replace the definition of
-`HelloFunctionTest` with:
-
-```java
-
-package com.example.fn;
-
-import com.fnproject.fn.testing.*;
-import org.junit.*;
-
-import static org.junit.Assert.*;
-
-public class HelloFunctionTest {
-
-    @Rule
-    public final FnTestingRule testing = FnTestingRule.createDefault();
-
-    @Test
-    public void shouldReturnGreeting(){
-        testing.givenEvent().withBody("{\"name\":\"Bob\"}").enqueue();
-        testing.thenRun(HelloFunction.class,"handleRequest");
-
-        FnResult result = testing.getOnlyResult();
-        assertEquals("{\"salutation\":\"Hello Bob\"}", result.getBodyAsString());
-    }
-}
-
-```
-
-In the new `shouldReturnGreeting()` test method we're passing in the
-JSON document
-
-```json
-{
-    "name": "Bob"
-}
-```
-and expecting a result of
-```json
-{
-    "salutation": "Hello Bob"
-}
-```
-
-If you re-run the test via `fn build` we can see that it now passes.
-
-# Deploying your Java Function
-
-Now that we have our Java function updated and passing our JUnit tests
-we can move onto deploying it to the Fn server.  As we're running the
-server on the local machine we can save time by not pushing the
-generated image out to a remote Docker repository by using the `--local`
-option.
-
-First launch the Fn server via the 2nd window you opened at the start of this lab.  
-Type the following but note that the process will run in the foreground so that
+To start Fn you can use the `fn` command line interface (CLI).  Type the
+following but note that the process will run in the foreground so that
 it's easy to stop with Ctrl-C:
 
-**Attention !** Only a single instance of the fn start command should be issued.  Please agree with the other participants running on the same instance who will issue this command. 
-
-![](images/userinput.png)
+![user input](images/userinput.png)
 >`fn start`
 
 You should see output similar to:
@@ -476,100 +75,348 @@ time="2017-09-18T14:37:13Z" level=info msg="Serving Functions API on address `:8
   /_/   /_/ /_/
 ```
 
-That's it!  The Fn server instance
-is up and running. 
+Let's verify everthing is up and running correctly.
 
-Now we are ready to deploy our function to this instance :
+**Open a new terminal** and run the following:
 
-![](images/userinput.png)
->`fn deploy --local --app myapp`
+![user input](images/userinput.png)
+>`fn version`
+
+You should see the version of the fn CLI (client) and server displayed (your version will
+likely differ):
 
 ```sh
-Deploying javafn to app: myapp at path: /javafn
+Client version:  0.4.62
+Server version:  0.3.335
+```
+
+If the server version is "?" then the fn CLI cannot reach the server.  If
+this happens it's likely you have something else running on port 8080. In this
+case stop the other process, and stop (ctrl-c) and restart the fn server as
+described previously.
+
+## Your First Function
+
+Before we start developing we need to set the `FN_REGISTRY`
+environment variable.  Normally, it's set to your Docker Hub username.
+However in this tutorial we'll work in local development mode so we can set
+the `FN_REGISTRY` variable to an arbitrary value. Let's use `fndemouser`.
+
+![user input](images/userinput.png)
+>`export FN_REGISTRY=fndemouser`
+
+
+With that out of the way, let's create a new function. In the terminal type the
+following.
+
+![user input](images/userinput.png)
+>`fn init --runtime node launch`
+
+The output will be
+
+```yaml
+Creating function at: /launch
+Runtime: node
+Function boilerplate generated.
+func.yaml created.
+```
+
+The `fn init` command creates an simple function with a bit of boilerplate to
+get you started. The `--runtime` option is used to indicate that the function
+we're going to develop will be written in Node. A number of other runtimes are
+also supported.  Fn creates the simple function along with several supporting files in the `/launch` directory.
+
+### Reviewing your Function File
+
+With your function created change into the `/launch` directory.
+
+![user input](images/userinput.png)
+>`cd launch`
+
+Now get a list of the directory contents.
+
+![user input](images/userinput.png)
+>`ls`
+
+>```sh
+> func.js func.yaml  test.json
+>```
+
+The `func.js` file which contains your actual node function is generated along
+with several supporting files. To view your Node function type:
+
+![user input](images/userinput.png)
+>cat func.js
+
+Open up the func.js file and add the following code:
+
+```
+fs = require('fs')
+try{
+incoming = JSON.parse(fs.readFileSync('/dev/stdin').toString())
+incoming.mass = 1000000
+console.log(JSON.stringify(incoming))
+}
+catch{
+    console.log(`{"message": "There was no input"}`)
+}
+```
+
+This function looks for JSON input in the form of `{"mass": 2000000, "propellant": 1000000,"thrust": 300000,"colour": "white", "burntime": 124}`. If this
+JSON example is passed to the function, you should return your configuration, you can simply return it without altering (but you can modify some of the parameters to get better heights)  `{"mass": 1000000, "propellant": 1000000,"thrust": 300000,"colour": "white", "burntime": 124}`.
+
+
+### Understanding func.yaml
+The `fn init` command generated a `func.yaml` function
+configuration file. Let's look at the contents:
+
+![user input](images/userinput.png)
+>cat func.yaml
+
+```yaml
+TODO
+```
+
+The generated `func.yaml` file contains metadata about your function and
+declares a number of properties including:
+
+* name--the name of the function. Matches the directory name.
+* version--automatically starting at 0.0.1
+* runtime--the name of the runtime/language which was set based on the value set
+in `--runtime`.
+* entrypoint--the name of the executable to invoke when your function is called,
+in this case `./func`
+* format--the function uses JSON as its input/output method ([see: Open Function Format](https://github.com/fnproject/fn/blob/master/docs/developers/function-format.md)).
+
+There are other user specifiable properties but these will suffice for
+this example.  Note that the name of your function is taken from the containing
+folder name.  We'll see this come into play later on.
+
+### Other Function Files
+The `fn init` command generated two other files.
+
+* `test.json` -- a test file that is used to test your function, it defines an
+input and the output of the function, helps to identify if the function works
+correctly or not. Function testing is not covered in this tutorial.
+
+
+## Running Your First Function
+
+With the `launch` directory containing `func.js` and `func.yaml` you've
+got everything you need to run the function.  So let's run it and
+observe the output.  Note that the first time you build a
+function of a particular language it takes longer as Fn downloads
+the necessary Docker images.
+
+![user input](images/userinput.png)
+> `fn run`
+
+```sh
+Building image fndemouser/gofn:0.0.1 ...
+{"message": "There was no input"}
+```
+
+The last line of output should be `{"message": "There was no input"}` that was produced
+because the try statement failed as there was not input parameters.
+
+If you ever want more details on what a given fn command is doing behind the
+scenes you can add the `--verbose` switch.  Let's rerun with verbose output
+enabled.
+
+![user input](images/userinput.png)
+> `fn --verbose run`
+
+```sh
+TODO
+```
+
+You can also pass data to the run command. For example:
+
+![user input](images/userinput.png)
+> `echo -n '{"mass": 2000000}' | fn run`
+
+```sh
+Building image fndemouser/launch:0.0.1 .....
+{"mass": 1000000}
+```
+
+The JSON data was parsed and since `mass` was set, that value is passed
+back in the output.
+
+### Understanding fn run
+If you have used Docker before the output of `fn --verbose run` should look
+familiar--it looks like the output you see when running `docker build`
+with a Dockerfile.  Of course this is exactly what's happening!  When
+you run a function like this Fn is dynamically generating a Dockerfile
+for your function, building a container, and then running it.
+
+> __NOTE__: Fn is actually using two images.  The first contains
+the language compiler and is used to generate a binary.  The second
+image packages only the generated binary and any necessary language
+runtime components. Using this strategy, the final function image size
+can be kept as small as possible.  Smaller Docker images are naturally
+faster to push and pull from a repository which improves overall
+performance.  For more details on this technique see [Multi-Stage Docker
+Builds for Creating Tiny Go Images](https://medium.com/travis-on-docker/multi-stage-docker-builds-for-creating-tiny-go-images-e0e1867efe5a).
+
+`fn run` is a local operation.  It builds and packages your function
+into a container image which resides on your local machine.  As Fn is
+built on Docker you can use the `docker` command to see the local
+container image you just generated.
+
+You may have a number of Docker images so use the following command
+to see only those created by fndemouser:
+
+![user input](images/userinput.png)
+>`docker images | grep fndemouser`
+
+You should see something like:
+
+```sh
+fndemouser/launch      0.0.1               7b586506a195        5 minutes ago        15MB
+```
+
+## Deploying Your First Function
+
+When we used `fn run` your function was run in your local environment.
+Now let's deploy your function to the Fn server we started previously.
+This server could be running in the cloud, in your datacenter, or on
+your local machine like we're doing here.
+
+Deploying your function is how you publish your function and make it
+accessible to other users and systems.
+
+In your terminal type the following:
+
+![user input](images/userinput.png)
+> `fn deploy --app lauchapp --local`
+
+You should see output similar to:
+
+```sh
+Deploying launch to app: launchapp at path: /launch
 Bumped to version 0.0.2
-Building image fndemouser/javafn:0.0.2
-...
-Successfully built 406b44a45821
-Successfully tagged fndemouser/javafn:0.0.2
-Updating route /javafn using image fndemouser/javafn:0.0.2...
+Building image fndemouser/launch:0.0.2 .....
+Updating route /launch using image fndemouser/launch:0.0.2...
 ```
 
-Review the last line of the deploy output.  When deployed, a function's
-Docker image is associated with a route which is the function's name and
-the function's name is taken from the containing directory.  In this
-case the route is `/javafn`.
+Functions are grouped into applications so by specifying `--app launchapp`
+we're implicitly creating the application "launchapp" and associating our
+function with it.
 
-We can use the route to invoke the function via curl and passing the
-JSON input as the body of the call.
+Specifying `--local` does the deployment to the local server but does
+not push the function image to a Docker registry--which would be necessary if
+we were deploying to a remote Fn server.
 
-![](images/userinput.png)
-> `curl --data '{"name": "Bob"}' http://localhost:8080/r/myapp/javafn`
+The output message
+`Updating route /launch using image fndemouser/launch:0.0.2`
+let's us know that the function packaged in the image
+"fndemouser/launch:0.0.2" has been bound by the Fn server to the route
+"/launch".  We'll see how to use the route below.
+
+Note that the containing folder name 'launch' was used as the name of the
+generated Docker container and used as the name of the route that
+container was bound to.
+
+The fn CLI provides a couple of commands to let us see what we've deployed.
+`fn apps list` returns a list of all of the defined applications.
+
+![user input](images/userinput.png)
+> `fn apps list`
+
+Which, in our case, returns the name of the application we created when we
+deployed our gofn function:
 
 ```sh
-{"salutation":"Hello Bob"}
+launchapp
 ```
 
-Success!
+We can also see the functions that are defined by an application.  Since
+functions are exposed via routes, the `fn routes list <appname>` command
+is used.  To list the functions included in "goapp" we can type:
 
-# Improving Performance
+![user input](images/userinput.png)
+>`fn routes list launchapp`
 
-Finally you might notice that the function call takes a few hundred
-milliseconds.  Try calling the function three times
-in a row paying attention to how long it takes to complete each call:
+```sh
+path   image                  endpoint
+/launch  fndemouser/launch:0.0.2  localhost:8080/r/launchapp/launch
+```
 
-![](images/userinput.png)
->time `curl --data '{"name":"Tom"}' http://localhost:8080/r/myapp/javafn`
+The output confirms that launchapp contains a `launch` function that is implemented
+by the Docker container `fndemouser/launch:0.0.2` which may be invoked via the
+specified URL.  Now that we've confirmed deployment was successsful, let's
+call our function.
 
->time `curl --data '{"name":"Tom"}' http://localhost:8080/r/myapp/javafn`
+## Calling Your Deployed Function
 
->time `curl --data '{"name":"Tom"}' http://localhost:8080/r/myapp/javafn`
+There are two ways to call your deployed function.  The first is using
+the `fn` CLI which makes invoking your function relatively easy.  Type
+the following:
 
-By default, fn will start a new container (and therefore
-a new JVM) for each invocation. This may be what you want--as each
-function call will run in its own
-isolated container and process.  But you can
-configure the function to re-use the same container and JVM for multiple
-invocations, thus reducing latency.  This is called a 'Hot Function'.
+![user input](images/userinput.png)
+>`fn call launchapp /launch`
 
-We can turn our function into a Hot Function by changing the format on
-the route.  
+which results in our familiar output message.
 
-![](images/userinput.png)
->Edit the func.yaml and add the line `format: http`
+```sh
+{"message": "There was no input"}
+```
 
-Redeploy the function with the new configuration:
+Of course this is unchanged from when you ran the function locally.
+However when you called "launchapp /launch" the fn server looked up the
+"launchapp" application and then looked for the Docker container image
+bound to the "/launch" route.
 
-![](images/userinput.png)
->`fn deploy --local --app myapp`
+The other way to call your function is via HTTP.  The Fn server
+exposes our deployed function at "http://localhost:8080/r/launchapp/launch", a URL
+that incorporates our application and function route as path elements.
 
+Use curl to invoke the function:
 
-Now if we call it again the first call still takes a few hundred
-milliseconds to start up the container but subsequent calls are super
-fast. Try calling the function repeatedly now that you've made the
-format change:
+![user input](images/userinput.png)
+>`curl http://localhost:8080/r/launchapp/launch`
 
+The result is once again the same.
 
-![](images/userinput.png)
->time `curl --data '{"name":"Tom"}' http://localhost:8080/r/myapp/javafn`
+```sh
+{"message": "There was no input"}
+```
 
->time `curl --data '{"name":"Tom"}' http://localhost:8080/r/myapp/javafn`
+We can again pass JSON data to out function get the value of name passed to the
+function back.
 
->time `curl --data '{"name":"Tom"}' http://localhost:8080/r/myapp/javafn`
+![user input](images/userinput.png)
+>`curl http://localhost:8080/r/launchapp/launch -d '{"mass": 2000000}'`
 
-# Running the Fn Admin GUI
-Now we'll launch the FN Admin GUI and access this application from your local pc.
-Perform following steps : 
+The result is now:
 
-> cd /home/fn/bin
+```sh
+{"mass": 1000000}
+```
 
-> ./runAdminUI
+## Launching your Rocket
 
-Now use a browser on your PC to go to the following address:
-        'Fn Server IP_Address':4000        
+To launch your rocket we need to first expose the function publically and then add the function URL to the mission control dashboard.
 
-# Wrapping Up
+Since our fnserver is on our local machine we will use [https://ngrok.com/](https://ngrok.com/) to expose our local server to an endpoint for testing.
 
-Congratulations! You've just completed an introduction to the Fn Java
-FDK.  There's so much more in the FDK than we can cover in this first exercise, 
-if you want to experiment more visit [FnProject.io](https://github.com/fnproject/fn/blob/master/README.md) on GitHub.
+Signup to ngrok and then follow installatin instructions at https://dashboard.ngrok.com/get-started
 
+Once installed if you then type 
+
+```sh
+./ngrok http 8080
+```
+
+The FN Server will be generated a public URL.
+
+You can then use this Public URL by going to the dashboard http://missioncontrol.thebeebs.co.uk/. Enter the url for your function and submit. The mission control system will then queue your launch attempt.
+
+See if you can modify the parameters and get your rocket higher than anybody elses today.
+
+## Wrapping Up
+
+Congratulations!  In this adventure you've accomplished a lot.  You've
+installed Fn, started up an Fn server, created your first function,
+run it locally, and then deployed it where it can be invoked over HTTP. You've even done some rocket science. 
