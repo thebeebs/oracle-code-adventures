@@ -1,12 +1,12 @@
-Let's go on a Code Adventure and explore new ideas, technologies and skills. In this edition of Code Adventures we will explore Container native Development through short three 20 minutes talks on Microservices, Kubernetes and Serverless followed by a selection of coding labs where you can get hands-on with the technologies discussed.
+Let's go on a Code Adventure and explore new ideas, technologies and skills. In this edition of Code Adventures we will explore container native development through three 20 minutes talks on Microservices, Kubernetes and Serverless followed by a selection of coding adventures where you can get hands-on with the technologies discussed.
 
-After the Initial talks there will be three different code Adventures you can go on
+After the Initial talks there will be three different code adventures you can go on
 
 1. Microservices - The DevStar
 2. Serverless - Launch A Rocket into Space
 3. Kubernetes - Space Race
 
-# Microservices - The DevStar
+# [Microservices - The DevStar](microservices/README.md)
 
 In this Adventure you will complete missions to become the Dev Star.
 
@@ -17,7 +17,8 @@ Choose your platform space fighter of choice (Node.js, Java or PHP) and develop 
 * You will explore and perform actions related to scaling and operating your microservices.
 * You will use your creativity and team play to develop features to your microservices that will help you win.
 
-# Serverless - Launch A Rocket into Space
+# [Serverless - Launch A Rocket into Space](serverless/readME.md)
+
 In this Adventure, you will attempt to launch a rocket into space. You will create some Serverless functions that set the parameters for the launch and deal with various challenges you will encounter. Once deployed you will register your functions with Mission control and they will use your functions to launch a rocket.
 
 There will be prizes for the best launch.
@@ -27,8 +28,7 @@ There will be prizes for the best launch.
 * You will learn how to create a hot function and explore the lifecycle of a function in fnProject.
 * You will use your creativity to develop features that help your function make the best rocket Launch.
 
-
-# Kubernetes - Space Race
+# [Kubernetes - Space Race](kubernetes/README.md)
 
 In this Adventure, you will walk in the footsteps of the USSR and USA in their quest to dominate space. 
 
