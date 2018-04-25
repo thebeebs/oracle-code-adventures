@@ -186,7 +186,7 @@ First you need a github.com based source code repository for the sample applicat
 - Select "Import Repository"
 
 Now enter the source repository URL and your new repository name:
-- Enter the following URL into the address bar : https://github.com/thebeebs/sputnik
+- Enter the following URL into the address bar : https://github.com/thebeebs/sputnik.git
 - Enter the name of your new repository, using your "userxx" prefix: for example "user04-sputnik".  Only use small caps in the name of the repository !!
 
 **ATTENTION : read the above AGAIN : ONLY SMALL CAPS FOR THE NAME OF YOUR REPOSITORY !!!**

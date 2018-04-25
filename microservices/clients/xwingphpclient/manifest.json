@@ -1,7 +1,0 @@
-{
-  "runtime": {
-    "majorVersion": "7.0"
-  },
-  "command": "apache2-run",
-  "notes": "PHP Sample Application"
-}

@@ -1,8 +1,0 @@
-{
-"runtime":{
-"majorVersion":"6"
-},
-"command": "node ./bin/www",
-"release": {},
-"notes": "node client"
-}
