@@ -38,7 +38,7 @@ However, for this tutorial, an IDE isn't necessary.
 From a terminal type the following:
 
 
-![](images/userinput.png)
+
 >`curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh`
 
 Once installed you'll see the Fn version printed out.  You should see
@@ -58,7 +58,6 @@ To start Fn you can use the `fn` command line interface (CLI).  Type the
 following but note that the process will run in the foreground so that
 it's easy to stop with Ctrl-C:
 
-![user input](images/userinput.png)
 >`fn start`
 
 You should see output similar to:
@@ -79,7 +78,6 @@ Let's verify everthing is up and running correctly.
 
 **Open a new terminal** and run the following:
 
-![user input](images/userinput.png)
 >`fn version`
 
 You should see the version of the fn CLI (client) and server displayed (your version will
@@ -102,14 +100,12 @@ environment variable.  Normally, it's set to your Docker Hub username.
 However in this tutorial we'll work in local development mode so we can set
 the `FN_REGISTRY` variable to an arbitrary value. Let's use `fndemouser`.
 
-![user input](images/userinput.png)
 >`export FN_REGISTRY=fndemouser`
 
 
 With that out of the way, let's create a new function. In the terminal type the
 following.
 
-![user input](images/userinput.png)
 >`fn init --runtime node launch`
 
 The output will be
@@ -130,12 +126,10 @@ also supported.  Fn creates the simple function along with several supporting fi
 
 With your function created change into the `/launch` directory.
 
-![user input](images/userinput.png)
 >`cd launch`
 
 Now get a list of the directory contents.
 
-![user input](images/userinput.png)
 >`ls`
 
 >```sh
@@ -145,7 +139,6 @@ Now get a list of the directory contents.
 The `func.js` file which contains your actual node function is generated along
 with several supporting files. To view your Node function type:
 
-![user input](images/userinput.png)
 >cat func.js
 
 Open up the func.js file and add the following code:
@@ -162,15 +155,34 @@ catch{
 }
 ```
 
-This function looks for JSON input in the form of `{"mass": 2000000, "propellant": 1000000,"thrust": 300000,"colour": "white", "burntime": 124}`. If this
-JSON example is passed to the function, you should return your configuration, you can simply return it without altering (but you can modify some of the parameters to get better heights)  `{"mass": 1000000, "propellant": 1000000,"thrust": 300000,"colour": "white", "burntime": 124}`.
+This function looks for JSON input in the form of 
 
+````
+{   
+    "mass": 2000000, 
+    "propellant": 1000000,
+    "thrust": 300000,
+    "colour": "white", 
+    "burntime": 124
+}
+````
+. If this
+JSON example is passed to the function, you should return your configuration, you can simply return it without altering (but you can modify some of the parameters to get better heights)  
+
+```
+{
+    "mass": 1000000, 
+    "propellant": 1000000,
+    "thrust": 300000,
+    "colour": "white", 
+    "burntime": 124
+}
+```
 
 ### Understanding func.yaml
 The `fn init` command generated a `func.yaml` function
 configuration file. Let's look at the contents:
 
-![user input](images/userinput.png)
 >cat func.yaml
 
 ```yaml
@@ -208,7 +220,6 @@ observe the output.  Note that the first time you build a
 function of a particular language it takes longer as Fn downloads
 the necessary Docker images.
 
-![user input](images/userinput.png)
 > `fn run`
 
 ```sh
@@ -223,7 +234,6 @@ If you ever want more details on what a given fn command is doing behind the
 scenes you can add the `--verbose` switch.  Let's rerun with verbose output
 enabled.
 
-![user input](images/userinput.png)
 > `fn --verbose run`
 
 ```sh
@@ -232,7 +242,6 @@ TODO
 
 You can also pass data to the run command. For example:
 
-![user input](images/userinput.png)
 > `echo -n '{"mass": 2000000}' | fn run`
 
 ```sh
@@ -267,7 +276,6 @@ container image you just generated.
 You may have a number of Docker images so use the following command
 to see only those created by fndemouser:
 
-![user input](images/userinput.png)
 >`docker images | grep fndemouser`
 
 You should see something like:
@@ -287,8 +295,6 @@ Deploying your function is how you publish your function and make it
 accessible to other users and systems.
 
 In your terminal type the following:
-
-![user input](images/userinput.png)
 > `fn deploy --app lauchapp --local`
 
 You should see output similar to:
@@ -309,10 +315,12 @@ not push the function image to a Docker registry--which would be necessary if
 we were deploying to a remote Fn server.
 
 The output message
-`Updating route /launch using image fndemouser/launch:0.0.2`
+```
+Updating route /launch using image fndemouser/launch:0.0.2
+```
 let's us know that the function packaged in the image
-"fndemouser/launch:0.0.2" has been bound by the Fn server to the route
-"/launch".  We'll see how to use the route below.
+```"fndemouser/launch:0.0.2"``` has been bound by the Fn server to the route
+```"/launch"```.  We'll see how to use the route below.
 
 Note that the containing folder name 'launch' was used as the name of the
 generated Docker container and used as the name of the route that
@@ -321,21 +329,22 @@ container was bound to.
 The fn CLI provides a couple of commands to let us see what we've deployed.
 `fn apps list` returns a list of all of the defined applications.
 
-![user input](images/userinput.png)
 > `fn apps list`
 
 Which, in our case, returns the name of the application we created when we
-deployed our gofn function:
+deployed our ```launch``` function:
 
-```sh
+```
 launchapp
 ```
 
 We can also see the functions that are defined by an application.  Since
-functions are exposed via routes, the `fn routes list <appname>` command
-is used.  To list the functions included in "goapp" we can type:
+functions are exposed via routes, the 
+>`fn routes list <appname>` 
 
-![user input](images/userinput.png)
+command
+is used.  To list the functions included in "launchapp" we can type:
+
 >`fn routes list launchapp`
 
 ```sh
@@ -354,7 +363,6 @@ There are two ways to call your deployed function.  The first is using
 the `fn` CLI which makes invoking your function relatively easy.  Type
 the following:
 
-![user input](images/userinput.png)
 >`fn call launchapp /launch`
 
 which results in our familiar output message.
@@ -374,7 +382,6 @@ that incorporates our application and function route as path elements.
 
 Use curl to invoke the function:
 
-![user input](images/userinput.png)
 >`curl http://localhost:8080/r/launchapp/launch`
 
 The result is once again the same.
@@ -386,7 +393,6 @@ The result is once again the same.
 We can again pass JSON data to out function get the value of name passed to the
 function back.
 
-![user input](images/userinput.png)
 >`curl http://localhost:8080/r/launchapp/launch -d '{"mass": 2000000}'`
 
 The result is now:
@@ -411,7 +417,7 @@ Once installed if you then type
 
 The FN Server will be generated a public URL.
 
-You can then use this Public URL by going to the dashboard http://missioncontrol.thebeebs.co.uk/. Enter the url for your function and submit. The mission control system will then queue your launch attempt.
+You can then use this Public URL by going to the dashboard TODO: Add URL http://missioncontrol.thebeebs.co.uk/. Enter the url for your function and submit. The mission control system will then queue your launch attempt.
 
 See if you can modify the parameters and get your rocket higher than anybody elses today.
 
