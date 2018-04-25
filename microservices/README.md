@@ -74,7 +74,7 @@ TODO: CONFIRM ALL WORK CORRECTLY INCLUDING IMAGE LINKS
 | Java SE     |   https://github.com/thebeebs/xwingjavaclient |
 |PHP | [https://github.com/thebeebs/xwingphpclient](https://github.com/thebeebs/xwingphpclient) |
 
-2. Go to the preferred Weapon's Git Repo and fork into your own repository. Either clone this repo locally or you can simply work on git hub and edit the files if you do not not have local development tools that you would prefer to use.
+2. Go to the preferred Weapon's Git Repo and fork into your own repository. Either clone this repo locally or you can simply work on GitHub and edit the files if you do not not have local development tools that you would prefer to use.
 
 3. You should now successfully have cloned the code to your laptop.
 
@@ -125,7 +125,7 @@ eg: // My microservice!
 ```
 eg: // My microservice!
 ```
-2. Save the file using Ctrl + s.
+2. Save the file
 
 3. Check the file into GitHub.
 ```
@@ -143,7 +143,6 @@ git push
 ### Mission Description ###
 
 Your squad has now deployed one or several individual microservices (fighters). Our next mission will be add to another fighter to the squad by scaling up the number of instances for one of them.
-
 
 ### Mission Awards ###
 
