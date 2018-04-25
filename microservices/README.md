@@ -63,15 +63,15 @@ You should now have been assigned a squad and should have the following. If you 
 + Each git repository includes the basic code that is needed in order to run and deploy your microservice to the battle action!
 
 
-![Node](images/nodejs.png) ![Java](images/javase.png)  ![PHP](images/php.png) 
+TODO: CONFIRM ALL WORK CORRECTLY INCLUDING IMAGE LINKS
 
-
-TODO: CONFIRM ALL WORK CORRECTLY
+| [![Node](images/nodejs.png)](https://github.com/thebeebs/xwingnodeclient) | [![Java](images/javase.png)](https://github.com/thebeebs/xwingjavaclient) | [![PHP](images/php.png)](https://github.com/thebeebs/xwingphpclient) |
+|:---:|:---:|:---:|
 
 | Weapon        | Git Repo to Fork  |
 | ------------- | -----|
 | Node.js       |https://github.com/thebeebs/xwingnodeclient|
-| Java SE     |   https://github.com/thebeebs/xwingjavaclient1 |
+| Java SE     |   https://github.com/thebeebs/xwingjavaclient |
 |PHP | [https://github.com/thebeebs/xwingphpclient](https://github.com/thebeebs/xwingphpclient) |
 
 2. Go to the preferred Weapon's Git Repo and fork into your own repository. Either clone this repo locally or you can simply work on git hub and edit the files if you do not not have local development tools that you would prefer to use.
