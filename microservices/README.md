@@ -62,16 +62,17 @@ You should now have been assigned a squad and should have the following. If you 
 + Weapon selection strategy is completely up to your preference. Every squad members can have the same weapon, different weapons or chose to have no weapon at all.
 + Each git repository includes the basic code that is needed in order to run and deploy your microservice to the battle action!
 
-| ![Node](images/nodejs.png) | ![Java](images/javase.png) | ![PHP](images/php.png) |
+
+![Node](images/nodejs.png) ![Java](images/javase.png)  ![PHP](images/php.png) 
 
 
+TODO: CONFIRM ALL WORK CORRECTLY
 
 | Weapon        | Git Repo to Fork  |
 | ------------- | -----|
-| Node.js       | ``` https://github.com/thebeebs/xwingnodeclient ``` |
-| Java SE     |   ``` git clone https://github.com/thebeebs/xwingjavaclient1 ``` |
-
-| PHP |  ``` git clone https://github.com/thebeebs/xwingphpclient ``` |
+| Node.js       |https://github.com/thebeebs/xwingnodeclient|
+| Java SE     |   https://github.com/thebeebs/xwingjavaclient1 |
+|PHP | [https://github.com/thebeebs/xwingphpclient](https://github.com/thebeebs/xwingphpclient) |
 
 2. Go to the preferred Weapon's Git Repo and fork into your own repository. Either clone this repo locally or you can simply work on git hub and edit the files if you do not not have local development tools that you would prefer to use.
 
@@ -113,26 +114,27 @@ To Get this deployment working we will need to create an Account with Wercker.
 So, depending on the language you chose, have your code opened and make the suggested change:
 
  **Node.JS**: Open the file *xwingnodeclient/app.js* and on the first line insert a comment line with some text.
-                        
-                        eg: // My microservice!
-
+```                       
+eg: // My microservice!
+```
  **Java**: Open the file *src/main/java/com/example/rest/App.java* and on the first line insert a comment line.
-
-                        eg: // My microservice!
-
+```
+ eg: // My microservice!
+```
  **PHP**: Open the file *index.php* and edit the line on row 2 (below "<php") and insert a comment line.
-
-                        eg: // My microservice!
-
+```
+eg: // My microservice!
+```
 2. Save the file using Ctrl + s.
 
 3. Check the file into GitHub.
+```
+git add .
 
-       git add .
+git commit -m "My first commit"
 
-       git commit -m "My first commit"
-
-       git push
+git push
+```
 
 4. Monitor the Dev Star dashboard to await your fighter being deployed! If you can't see the Dashboard well on the projector/screen, just open the following url TODO: ADD URL. Your space fighter should appear in the dashboard and complete it's first strike to the Alien War Ship!
 
