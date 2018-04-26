@@ -62,9 +62,6 @@ You should now have been assigned a squad and should have the following. If you 
 + Weapon selection strategy is completely up to your preference. Every squad members can have the same weapon, different weapons or chose to have no weapon at all.
 + Each git repository includes the basic code that is needed in order to run and deploy your microservice to the battle action!
 
-
-TODO: CONFIRM ALL WORK CORRECTLY INCLUDING IMAGE LINKS
-
 | [![Node](images/nodejs.png)](https://github.com/thebeebs/xwingnodeclient) | [![Java](images/javase.png)](https://github.com/thebeebs/xwingjavaclient) | [![PHP](images/php.png)](https://github.com/thebeebs/xwingphpclient) |
 |:---:|:---:|:---:|
 
@@ -136,7 +133,7 @@ git commit -m "My first commit"
 git push
 ```
 
-4. Monitor the Dev Star dashboard to await your fighter being deployed! If you can't see the Dashboard well on the projector/screen, just open the following url TODO: ADD URL. Your space fighter should appear in the dashboard and complete it's first strike to the Alien War Ship!
+4. Monitor the Dev Star dashboard to await your fighter being deployed! If you can't see the Dashboard well on the projector/screen, just open the following url http://129.144.148.225. Your space fighter should appear in the dashboard and complete it's first strike to the Alien War Ship!
 
 ## Mission: Scale your first fighter! ##
 
@@ -183,7 +180,7 @@ To start firing at the shield, we first need to have the Alien War Ship exposing
 - For Node.js, the file is located at xwingnodeclient/app.js (in the folder where you locally cloned the code)
 - For PHP, the file is located at index.php (in the folder where you locally cloned the code)
 
-The base URL of the shield is ```TODO: http://129.157.179.180:3000/shield/x-coordinate_goes_here/y-coordinate_goes_here/Your_squad_name_goes_here(e.g yellow)/Your_microservice_name_goes_here(e.g YellowJava2Fighter)```. **The shield will get hit by HTTP GET Request bullets!**
+The base URL of the shield is ```http://129.144.148.225:3000/shield/x-coordinate_goes_here/y-coordinate_goes_here/Your_squad_name_goes_here(e.g yellow)/Your_microservice_name_goes_here(e.g YellowJava2Fighter)```. **The shield will get hit by HTTP GET Request bullets!**
 
 **Hint: Make sure that your code/function is actually being called **
 
@@ -211,7 +208,7 @@ The Alien War Ship has sent out 10 Mini Fighters to attack your fighters! You ne
 
 1. You should now have received information from the spy that will give you the y-coordinates of the Mini Fighters. The example below would shoot down ***one*** of the Mini Fighters. ***The x-coordinate is locked at coordinate 45***.
 
-```TODO: http://129.157.179.180:3000/fighters/45/y-coordinate_goes_here/Your_squad_name_goes_here(e.g yellow)/Your_microservice_name_goes_here(e.g YellowJava2Fighter)```. **The Mini Fighters will get hit by HTTP GET Request bullets!**
+```http://129.144.148.225:3000/fighters/45/y-coordinate_goes_here/Your_squad_name_goes_here(e.g yellow)/Your_microservice_name_goes_here(e.g YellowJava2Fighter)```. **The Mini Fighters will get hit by HTTP GET Request bullets!**
 
 **Hint: Notice the changed endpoint 'fighters'**
 
@@ -234,10 +231,10 @@ The spy should now have exposed the secrets of the database where the Alien War 
 - Lesser points will be given to subsequent squads.
 
 ### Mission Instructions ###
-1. You should now have received information from the spy about the credentials to the Alien War Ship's MySQL database where the coordinates for the Core Reactor is kept. Develop a MySQL query that queries the **SecretTable** to retrieve information about the Reactor Core coordinates! The Host IP address of the database is TODO: **129.157.179.180**
+1. You should now have received information from the spy about the credentials to the Alien War Ship's MySQL database where the coordinates for the Core Reactor is kept. Develop a MySQL query that queries the **SecretTable** to retrieve information about the Reactor Core coordinates! The Host IP address of the database is  **129.144.148.225**
 
 2. When you have the coordinates, hit the Reactor Core at the following URL:
-```TODO: http://129.157.179.180:3000/reactorCore/x-coordinate_goes_here/y-coordinate_goes_here/Your_squad_name_goes_here(e.g yellow)/Your_microservice_name_goes_here(e.g YellowJava2Fighter)```.
+```http://129.144.148.225:3000/reactorCore/x-coordinate_goes_here/y-coordinate_goes_here/Your_squad_name_goes_here(e.g yellow)/Your_microservice_name_goes_here(e.g YellowJava2Fighter)```.
 **The Reactor Core will get hit by HTTP GET Request bullets!**
 
 **Hint: Notice the changed endpoint 'reactorCore'**
