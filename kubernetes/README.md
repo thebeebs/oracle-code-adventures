@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this Adventure, you will walk in the footsteps of the USSR in their quest to dominate space. 
+In this Adventure, you will walk in the footsteps of the USSR on their quest to dominate space. 
 
 You will use Kubectl and Wercker to deploy and manage an application that represents Sputnik (the first satellite in space) we wil deploy Sputnik to space (well Kubernetes at least).
 
