@@ -30,9 +30,9 @@ There will be prizes for the best launch.
 
 # [Kubernetes - Space Race](kubernetes/README.md)
 
-In this Adventure, you will walk in the footsteps of the USSR and USA in their quest to dominate space. 
+In this Adventure, you will walk in the footsteps of the USSR in their quest to dominate space. 
 
-You will use Kubectl to deploy and manage prebuilt container images. Launching Sputnik satellites, Laika (the First Dog in Space), Gagarin, and then Finally Apollo 11.
+You will use Kubectl and Wercker to deploy and manage an application that represents Sputnik (the first satellite in space) we wil deploy Sputnik to space (well Kubernetes at least).
 
 * You will learn how to manage and deploy containers on Kubernetes.
 * You will learn how to manage continuous integration and continuous deployment of your container in a DevOps manner.
