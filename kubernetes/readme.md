@@ -2,13 +2,13 @@
 
 ## Introduction
 
-This adenture is designed for people with no prior experience with Docker, Node.js, AngularJS and want to learn the core concepts and basics of Container Native DevOps with Kubernetes. 
+In this Adventure, you will walk in the footsteps of the USSR in their quest to dominate space. 
 
-The application we will deploy invokes the backend miscroservice using REST interface is built on AngularJS.
+You will use Kubectl and Wercker to deploy and manage an application that represents Sputnik (the first satellite in space) we wil deploy Sputnik to space (well Kubernetes at least).
 
 ## Prerequisites ##
 
-For this adventure you will need to use the Github and Wercker Account information provided to you.  As all participants will work on a common environment, we will use "prefixes" throughout this exercise to distinguish between participants.
+For this adventure you will need to use the Github and Wercker Account information *provided to you*.  As all participants will work on a common environment, we will use "prefixes" throughout this exercise to distinguish between participants.
 
 **Please be carefull to read the instructions and use your "userxx" label for the appropriate objects.**
 
