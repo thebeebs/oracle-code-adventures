@@ -14,7 +14,7 @@ For this adventure you will need to use the Github and Wercker Account informati
 
 ### Setting up your screens ###
 
-* Use Incognito/Private mode in your browser and do not use your personal GitHUb or Wercker accounts, we will all be sharing the same accounts today *
+**Use Incognito/Private mode in your browser and do not use your personal GitHUb or Wercker accounts, we will all be sharing the same accounts today **
 
 - Open a browser window on [https://github.com](https://github.com) and sign in using the credentials provided
 - Open a second window on [https://app.wercker.com](https://app.wercker.com) and use the "Sign in with GitHub" button.
