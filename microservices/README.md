@@ -101,11 +101,50 @@ To deploy your fighter, you will use Continuous Integration and Deployment.
 
 You will not to have to worry about compilation, package and deployment.
 
-Since your code is already cloned, all you need to do is to make a change on it, commit the change to the local repository and push it to the remote original repository on Github. 
+Since your code is already cloned, all you need to do is to make a change on it, commit the change to the local repository and push it to the remote original repository on Github. Or you Could even edit the files directly on GitHub.
 
 To Get this deployment working we will need to create an Account with Wercker.
 
-# TODO: Instructions of how to set up Wercker
+- Open a browser window on [https://github.com](https://github.com) and sign in using your GitHub Account.
+- Open a second window on [https://app.wercker.com](https://app.wercker.com) and use the "Sign in with GitHub" button.
+
+Now you have created a Wercker account you need to add our application.
+
+### Create application pipelines ###
+
+Change to the browser where [https://app.wercker.com](https://app.wercker.com) is open. Select **Pipelines** and click **Create an application** to create a new pipeline. (You can click on the plus sign at the top right corner and select **Add application** too.)
+
+Select the application owner. Use the default user and don't select the organization if exists.
+
+Now select the repository you just forked. Next click **Use selected repo**.
+
+In case of private repositories you should define the access method. Since the the sample repository created as public you can leave the default checkout method. Click **Next step**.
+
+Finally you can choose whether your application is public or not. We recommend to leave default which means the application will be private. Click **Finish** to create your application.
+
+You will now land on a page where you are invited to create a new wercker.yml file
+
+**We will not do this here, as our wercker.yml file is already on the top level of our Github repository**
+
+Next Go to the Enviroment Tab. And Set up The following enviroment variables:
+
+![Environment Variables](images/wercker-environment-variables.png)
+
+All the details should be in the credentials handout. The API is:
+
+
+
+| Key        | Value           |
+| ------------- |-------------|
+| OPC_USERNAME      | In hand out | 
+| OPC_PASSWORD      | In hand out | 
+| REST_URL | https://apaas.europe.oraclecloud.com/paas/service/apaas/api/v1.1/apps  | 
+| IDENTITY_DOMAIN | In hand out | 
+
+
+
+
+
 
 1. Let's first make a change to make sure that when you push the code, a difference in the repository is identified and the build job is properly triggered.
 So, depending on the language you chose, have your code opened and make the suggested change:
