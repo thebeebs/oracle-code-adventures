@@ -289,7 +289,7 @@ Deploying your function is how you publish your function and make it
 accessible to other users and systems.
 
 In your terminal type the following:
-> `fn deploy --app lauchapp --local`
+> `fn deploy --app launchapp --local`
 
 You should see output similar to:
 
