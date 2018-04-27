@@ -434,7 +434,35 @@ The API will return JSON in the following format
 }
 ```
 
-You must then post this JSON back to a different API. Be sure to write code in your function that modifies the 'thrust' property to see if you can get the rocket higher. Be warned too much thrust, and you will destroy the rocket and receive a 0km Height. Also, make sure to change the *name* property, so you know who you are on the dashboard. 
+You must then post this JSON back to a different API. Here is some sample code to do that:
+
+```
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'http://129.144.148.225:3000/missioncontrol/launch',
+  headers: 
+   { 'postman-token': 'f8ed1b31-8e8d-801e-b8ea-02329a8f81a0',
+     'cache-control': 'no-cache',
+     'content-type': 'application/json' },
+  body: 
+   { mass: 1,
+     thrust: 21,
+     colour: 'none',
+     launchid: 3480,
+     name: 'Martin Beeby' },
+  json: true };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+
+Be sure to write code in your function that modifies the 'thrust' property to see if you can get the rocket higher. Be warned too much thrust, and you will destroy the rocket and receive a 0km Height. Also, make sure to change the *name* property, so you know who you are on the dashboard. 
 
 If you don't have enough thrust your rocket can't take off. 
 
