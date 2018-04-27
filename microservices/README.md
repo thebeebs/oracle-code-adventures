@@ -143,10 +143,10 @@ All the details should be in the credentials handout. The API is:
 
 
 
+### Ready to Deploy
 
 
-
-1. Let's first make a change to make sure that when you push the code, a difference in the repository is identified and the build job is properly triggered.
+1. Let's first make a change to github to check the build and deploy is now working, when you checkin a difference in the repository is identified and the build job is properly triggered in Wercker.
 So, depending on the language you chose, have your code opened and make the suggested change:
 
  **Node.JS**: Open the file *xwingnodeclient/app.js* and on the first line insert a comment line with some text.
@@ -163,7 +163,7 @@ eg: // My microservice!
 ```
 2. Save the file
 
-3. Check the file into GitHub.
+3. Check the file into Git if you are working locally.
 ```
 git add .
 
@@ -171,6 +171,7 @@ git commit -m "My first commit"
 
 git push
 ```
+Or you could edit directly in GitHub.
 
 4. Monitor the Dev Star dashboard to await your fighter being deployed! If you can't see the Dashboard well on the projector/screen, just open the following url http://129.144.148.225. Your space fighter should appear in the dashboard and complete it's first strike to the Alien War Ship!
 
@@ -189,7 +190,9 @@ Your squad has now deployed one or several individual microservices (fighters). 
 
 1. Sign in to Application Container Cloud using the URL and credentials you were given by Martin.
 
-2. Click your deployed application:
+The URL is: https://apaas.europe.oraclecloud.com/apaas/faces/aPaaSRunner.jspx
+
+2. Click your deployed application (yours is identified by your usernumber):
 
 3. Click your deployed application. If your microservice is deployed, you can view the logs. [Click here](../logs.md) for instructions on how to view the logs. **Before you continue to the next step, make sure that you are able to retrieve and read the logs from your running application!**
 
@@ -284,9 +287,15 @@ The spy should now have exposed the secrets of the database where the Alien War 
 
 5. If you feel that your microservice is not behaving correctly or might not have been deployed correctly, have a look at the logs as described [here](../logs.md). 
 
-### Next: You are finished ###
+### You are finished ###
 
 Congratulations! You are finished! If the Alien War Ship is still alive, help out your colleagues!
+
+### Next Step ###
+
+Take a Fee $300 trail out today http://thebeebs.uk/codeadventures (speak to Thrasos if you are having trouble) and create your own ACCS (Application Container Cloud Cluster). Once you have created it and deployed an application to it let me know at martin.beeby@oracle.com and I will send you some Oracle goodies as a thank you.
+
+
 
 
 
