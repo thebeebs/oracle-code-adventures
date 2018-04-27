@@ -314,8 +314,6 @@ The resulting file for user03 should now look like this :
 
 Commit the changes to the master branch of your repository (at the bottom of the screen)
 
-![alt text](images/wercker.application.102.png)
-
 Now edit the file called "ingress.yml.template".  This file controls the load balancer that provides external access to your application running on one ore more pods inside the K8S environment.
 
 - Change the name "rest-sputnik-ing" to "rest-sputnik-ingxx" where xx is your user number
@@ -352,11 +350,9 @@ Change to the browser where [https://app.wercker.com](https://app.wercker.com) i
 
 Select the application owner. Use the default user and don't select the organization if exists.
 
-![alt text](images/wercker.application.03.png)
+![alt text](images/m-wercker-create.png)
 
 Now select the repository you just created and that contains your "userxx" prefix.  Next click **Use selected repo**.
-
-![alt text](images/wercker.application.03b.png)
 
 In case of private repositories you should define the access method. Since the the sample repository created as public you can leave the default checkout method. Click **Next step**.
 
@@ -377,8 +373,6 @@ You will now land on a page where you are invited to create a new wercker.yml fi
 In this use case our CI/CD workflow has two potential forked routes of the flow. One for non-master (any patch) branch to test the application changes. The a second one for master branch to store and deploy the modified and tested application.
 
 Now select the **Workflow** tab and define the first pipeline. As mentioned upon creating a project in Wercker, it creates a *build* Workflow with a Git hook which executes a build pipeline. This means whenever you push changes into your github repository then a new build will be triggered. Now add a new pipeline what will do the Docker container image push to Oracle Container Registry. Click **Add new pipeline**.
-
-![alt text](images/wercker.application.07.png)
 
 + **Name**: *push-to-OCR* (but can be anything else)
 + **YML Pipeline name**: it has to be *push-to-releases*, because we already defined this pipeline using this name in  the *wercker.yml*.
@@ -434,8 +428,6 @@ The only thing what is missing to run the workflow is the enviroment configurati
 
 Go back your application select **Pipelines** and your application **userxx--sputnik**.
 
-![alt text](images/wercker.application.20b.png)
-
 The pipelines can have independent variables per pipelines or *global* scope variables. To simplify the configuration define *global* scope variables. Click the **Workflow** tab then select **Environment** tab. Set the name and value pairs for the following configuration variables.
 
 + **KUBERNETES\_MASTER** = Copy the address from kubeconfig file (line 5) the address of the master. It shoud start with *https://* prefix
@@ -443,29 +435,21 @@ The pipelines can have independent variables per pipelines or *global* scope var
 
 When you need to add new variable click **Add** button which saves the current row and add a new one. You can use the **Protected** tick box to store safely your value e.g. personal token.
 
-![alt text](images/wercker.application.21.png)
+![alt text](images/m-env.png)
 
 ### Execute the workflow ###
 
-In general the workflow is triggered by git changes, but first time you need to start. Switch to **Runs** tab and select **trigger a build now** link.
-
-![alt text](images/wercker.application.22.png)
+In general the workflow is triggered by git changes, but first time you need to start. Switch to **Runs** tab and select **trigger a build now** link at the very bottom of the page.
 
 When the build started it change to the build step's logs.
 
-![alt text](images/wercker.application.23.png)
-
 Select **Runs** tab to monitor the workflow status.
-
-![alt text](images/wercker.application.24.png)
 
 When the pipeline *push-to-OCR* is completed (marked with green background) you may verify that the container image including application bits and dependencies was really pushed to Oracle Container Registry. To verify this click **Releases** and observe that the image was recently pushed to repository *USERNAME/angular-node-creditscore*.
 
 ![alt text](images/wercker.application.41.png)
 
-To go back to your workflow click on click on **Pipelines** and select your *angular-node-creditscore* application.
-
-![alt text](images/wercker.application.20.png)
+To go back to your workflow click on click on **Pipelines** and select your application.
 
 When the workflow is completed click on the last *deploy-to-Prod* pipeline.
 
@@ -479,7 +463,7 @@ Open a new browser window or tab and open your sample application using the foll
 
 Due to the reason that the proper certification hasn't been configured you get a security warning. Ignore and allow to open the page.
 
-![alt text](images/wercker.application.27.png)
+![alt text](images/m-sputnik.png)
 
 Take a look at your deployed sputnik satellite application
 
@@ -516,19 +500,13 @@ Because of replica definition it created a Replica Set. A Replica Set ensures th
 
 To scale your application first use the dashboard. Find your *rest-sputnik<Your Number>* deployment and click on the option menu on the right side and select **Scale**.
 
-![alt text](images/wercker.application.35.png)
-
 Define the desired number of instances and click **OK** to confirm.
 
-![alt text](images/wercker.application.36.png)
 
 Wait till the new pod is up and running.
 
-![alt text](images/wercker.application.37.png)
 
 Open the sputnik application and fill the necessary data using different values to easily distinct the service log.
-
-![alt text](images/wercker.application.38.png)
 
 Open the log of the newly started pod.
 
