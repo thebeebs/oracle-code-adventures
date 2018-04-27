@@ -6,8 +6,6 @@ deploy them to a local Fn server.
 
 The function we are going to create will control the launch of a Space Rocket. It will accept some parameters, perform a calculation and then output some variables to control the launch. 
 
-Once we have hosted our function we will submit it to a Mission Control Dashboard to see how our function performs.  
-
 So let's get started!
 
 ## Installing Fn
@@ -146,8 +144,9 @@ Open up the func.js file and add the following code:
 ```
 fs = require('fs')
 try{
+// This is how you can read incoming JSON
 incoming = JSON.parse(fs.readFileSync('/dev/stdin').toString())
-incoming.mass = 1000000
+incoming.thrust = 22
 console.log(JSON.stringify(incoming))
 }
 catch{
@@ -159,11 +158,11 @@ This function looks for JSON input in the form of
 
 ````
 {   
-    "mass": 2000000, 
-    "propellant": 1000000,
-    "thrust": 300000,
-    "colour": "white", 
-    "burntime": 124
+    "mass": 1,
+    "thrust": 21,
+    "colour": "orange",
+    "launchid": 3480,
+    "name": ""
 }
 ````
 . If this
@@ -171,11 +170,11 @@ JSON example is passed to the function, you should return your configuration, yo
 
 ```
 {
-    "mass": 1000000, 
-    "propellant": 1000000,
-    "thrust": 300000,
-    "colour": "white", 
-    "burntime": 124
+    "mass": 1,
+    "thrust": 21,
+    "colour": "orange",
+    "launchid": 3480,
+    "name": ""
 }
 ```
 
@@ -242,11 +241,11 @@ TODO
 
 You can also pass data to the run command. For example:
 
-> `echo -n '{"mass": 2000000}' | fn run`
+> `echo -n '{"thrust": 2}' | fn run`
 
 ```sh
 Building image fndemouser/launch:0.0.1 .....
-{"mass": 1000000}
+{"thrust": 2}
 ```
 
 The JSON data was parsed and since `mass` was set, that value is passed
@@ -390,36 +389,62 @@ The result is once again the same.
 {"message": "There was no input"}
 ```
 
-We can again pass JSON data to out function get the value of name passed to the
-function back.
+We can again pass JSON data to out function
 
->`curl http://localhost:8080/r/launchapp/launch -d '{"mass": 2000000}'`
+>`curl http://localhost:8080/r/launchapp/launch -d '{"thrust": 1}'`
 
 The result is now:
 
 ```sh
-{"mass": 1000000}
+{"thrust": 2}
 ```
 
 ## Launching your Rocket
 
-To launch your rocket we need to first expose the function publically and then add the function URL to the mission control dashboard.
+The scoreboard can be found here and list all current rocket launches [http://129.144.148.225:3000/launch.html](http://129.144.148.225:3000/launch.html).
 
-Since our fnserver is on our local machine we will use [https://ngrok.com/](https://ngrok.com/) to expose our local server to an endpoint for testing.
+Fundamentally, what you now need to do is call an API from your to get Rocket information, you can then modify some of the rocket parameters, and then you pass the resultant JSON back to the server.
 
-Signup to ngrok and then follow installatin instructions at https://dashboard.ngrok.com/get-started
+I have included a code sample of how you call the API below:
 
-Once installed if you then type 
+```
+var request = require("request");
 
-```sh
-./ngrok http 8080
+var options = { method: 'GET',
+  url: 'http://129.144.148.225:3000/missioncontrol/rocketinformation',
+  headers: 
+   { 'cache-control': 'no-cache' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+  console.log(body);
+});
+
 ```
 
-The FN Server will be generated a public URL.
+The API will return JSON in the following format
 
-You can then use this Public URL by going to the dashboard TODO: Add URL http://missioncontrol.thebeebs.co.uk/. Enter the url for your function and submit. The mission control system will then queue your launch attempt.
+```
+{
+    "mass": 1,
+    "thrust": 21,
+    "colour": "orange",
+    "launchid": 3480,
+    "name": ""
+}
+```
 
-See if you can modify the parameters and get your rocket higher than anybody elses today.
+You must then post this JSON back to a different API. Be sure to write code in your function that modifies the 'thrust' property to see if you can get the rocket higher. Be warned too much thrust, and you will destroy the rocket and receive a 0km Height. Also, make sure to change the *name* property, so you know who you are on the dashboard. 
+
+If you don't have enough thrust your rocket can't take off. 
+
+ Mass is in kg (Any changes you make to the Mass will be ignored.)
+* Thrust is in Newtons (You can change this property)
+* To convert Mass into weight (Newtons) you need to multiply the number by 9.8 (earths gravitational force) 
+* Thrust has to be higher (in Newtons) than your rockets weight (in Newtons) to take off.
+* Thust - Weight =  resultant force. This resultant force is what allows you to take off.
+
+Hint: NASA’s first two orbiter test flights–STS-1 and STS-2 had external tanks that were painted white to protect them from exposure to ultraviolet rays during extended periods on the launch pad. Later it was determined the paint wasn’t vital for tank protection, so painting was abandoned to free up weight – about 600 pounds – for additional payload.
 
 ## Wrapping Up
 
