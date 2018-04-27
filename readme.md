@@ -17,7 +17,7 @@ Choose your platform space fighter of choice (Node.js, Java or PHP) and develop 
 * You will explore and perform actions related to scaling and operating your microservices.
 * You will use your creativity and team play to develop features to your microservices that will help you win.
 
-# [Serverless - Launch A Rocket into Space](serverless/readME.md)
+# [Serverless - Launch A Rocket into Space](serverless/README.md)
 
 In this Adventure, you will attempt to launch a rocket into space. You will create some Serverless functions that set the parameters for the launch and deal with various challenges you will encounter. Once deployed you will register your functions with Mission control and they will use your functions to launch a rocket.
 
@@ -25,7 +25,7 @@ There will be prizes for the best launch.
 
 * You will learn how to create a serverless function in fnProject using go, node.js, python or java.
 * You will learn how to deploy a serverless function using an existing container as your function code.
-* You will learn how to create a hot function and explore the lifecycle of a function in fnProject.
+* You will learn how to test functions functions.
 * You will use your creativity to develop features that help your function make the best rocket Launch.
 
 # [Kubernetes - Space Race](kubernetes/README.md)
