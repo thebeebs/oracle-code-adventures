@@ -399,11 +399,73 @@ The result is now:
 {"thrust": 2}
 ```
 
+# Testing Functions
+
+`fn` has testing built in that allows you to create inputs and expected outputs and verify the expected output with actual output. 
+
+## Write a Test File
+
+Create a file called `test.json` in your functions directory (beside your `func.yaml` file). Here's a simple example:
+
+```json
+{
+    "tests": [
+        {
+            "input": {"thrust": 1},
+            "output": {"thrust": 2}
+        },
+        {
+            "input": {"42": ""},
+            "output": {"message": "There was incorrect input"}
+        }
+    ]
+}
+```
+
+The example above has two tests, one with the following input:
+
+```json
+{"thrust": 1}
+```
+
+and a second one with incorrect input. 
+
+The first one is expected to return a json response with the following:
+
+```json
+{"thrust": 2}
+```
+
+And the second should return:
+
+```json
+{"message": "There was incorrect input"}
+```
+
+## Run Tests
+
+In your function directory, run:
+
+```sh
+fn test
+```
+
+You can also test against a remote `fn` server by using the `--remote` flag. eg:
+
+```sh
+fn test --remote myapp
+```
+
+To test your entire Fn application:
+
+```sh
+fn test --all
+```
 ## Launching your Rocket
 
 The scoreboard can be found here and list all current rocket launches [http://129.144.148.225:3000/launch.html](http://129.144.148.225:3000/launch.html).
 
-Fundamentally, what you now need to do is call an API from your to get Rocket information, you can then modify some of the rocket parameters, and then you pass the resultant JSON back to the server.
+Fundamentally, what you now need to do is call an API from your function to get Rocket information, you can then modify some of the rocket parameters, and then you pass the resultant JSON back to the server.
 
 I have included a code sample of how you call the API below:
 
@@ -442,8 +504,7 @@ var request = require("request");
 var options = { method: 'POST',
   url: 'http://129.144.148.225:3000/missioncontrol/launch',
   headers: 
-   { 'postman-token': 'f8ed1b31-8e8d-801e-b8ea-02329a8f81a0',
-     'cache-control': 'no-cache',
+   { 'cache-control': 'no-cache',
      'content-type': 'application/json' },
   body: 
    { mass: 1,
@@ -460,17 +521,15 @@ request(options, function (error, response, body) {
 });
 
 ```
-
-
 Be sure to write code in your function that modifies the 'thrust' property to see if you can get the rocket higher. Be warned too much thrust, and you will destroy the rocket and receive a 0km Height. Also, make sure to change the *name* property, so you know who you are on the dashboard. 
 
 If you don't have enough thrust your rocket can't take off. 
 
- Mass is in kg (Any changes you make to the Mass will be ignored.)
+* Mass is in kg (Any changes you make to the Mass will be ignored.)
 * Thrust is in Newtons (You can change this property)
 * To convert Mass into weight (Newtons) you need to multiply the number by 9.8 (earths gravitational force) 
 * Thrust has to be higher (in Newtons) than your rockets weight (in Newtons) to take off.
-* Thust - Weight =  resultant force. This resultant force is what allows you to take off.
+* Thrust - Weight =  resultant force. This resultant force is what allows you to take off.
 
 Hint: NASA’s first two orbiter test flights–STS-1 and STS-2 had external tanks that were painted white to protect them from exposure to ultraviolet rays during extended periods on the launch pad. Later it was determined the paint wasn’t vital for tank protection, so painting was abandoned to free up weight – about 600 pounds – for additional payload.
 
