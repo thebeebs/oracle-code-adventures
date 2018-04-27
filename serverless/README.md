@@ -149,7 +149,7 @@ incoming = JSON.parse(fs.readFileSync('/dev/stdin').toString())
 incoming.thrust = 22
 console.log(JSON.stringify(incoming))
 }
-catch{
+catch(e) {
     console.log(`{"message": "There was no input"}`)
 }
 ```
