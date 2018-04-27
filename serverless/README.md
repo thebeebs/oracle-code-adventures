@@ -184,10 +184,6 @@ configuration file. Let's look at the contents:
 
 >cat func.yaml
 
-```yaml
-TODO
-```
-
 The generated `func.yaml` file contains metadata about your function and
 declares a number of properties including:
 
@@ -196,7 +192,7 @@ declares a number of properties including:
 * runtime--the name of the runtime/language which was set based on the value set
 in `--runtime`.
 * entrypoint--the name of the executable to invoke when your function is called,
-in this case `./func`
+in this case `app.js`
 * format--the function uses JSON as its input/output method ([see: Open Function Format](https://github.com/fnproject/fn/blob/master/docs/developers/function-format.md)).
 
 There are other user specifiable properties but these will suffice for
@@ -208,8 +204,7 @@ The `fn init` command generated two other files.
 
 * `test.json` -- a test file that is used to test your function, it defines an
 input and the output of the function, helps to identify if the function works
-correctly or not. Function testing is not covered in this tutorial.
-
+correctly or not.
 
 ## Running Your First Function
 
